@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MovieApp.Domain
 {
-    public class Movies
+    public class Movies: BaseEntity
     {
         public int MovieId { get; set; }
         public string Title { get; set; }
