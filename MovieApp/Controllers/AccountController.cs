@@ -219,7 +219,7 @@ namespace IdentityDemo.Controllers
         public void SendVerificationLinkEmail(string email, ForgotPasswordModel model)
         {
             string token = Guid.NewGuid().ToString();
-            var fromEmail = new MailAddress("*******", "Calendar Application");
+            var fromEmail = new MailAddress("*******", "Movie Application");
             var toEmail = new MailAddress(email);
             var link = "http://localhost:52284/Account/ResetPassword?token=" + token;
             var fromEmailPassword = "*******";
