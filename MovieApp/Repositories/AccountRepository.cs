@@ -27,7 +27,7 @@ namespace MovieApp.Repositories
                                 From IdentityUser
                                 Where Email = @Email";
 
-                using (IDbConnection dbConnection = new SqlConnection(_configuration.GetConnectionString("default")))
+                using (IDbConnection dbConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     dbConnection.Open();
                     var result = dbConnection.QueryFirstOrDefault<UserModel>(query, model);
@@ -48,7 +48,7 @@ namespace MovieApp.Repositories
                             (FirstName, LastName, Email, Password, Role)
                              VALUES(@FirstName,@LastName,@Email,@Password,@Role)";
 
-                using (IDbConnection dbConnection = new SqlConnection(_configuration.GetConnectionString("default")))
+                using (IDbConnection dbConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     dbConnection.Open();
                     var result = dbConnection.Execute(query, model);
@@ -75,7 +75,7 @@ namespace MovieApp.Repositories
 
 
 
-                using (IDbConnection dbConnection = new SqlConnection(_configuration.GetConnectionString("default")))
+                using (IDbConnection dbConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     dbConnection.Open();
                     var result = dbConnection.Execute(query, model);
@@ -100,7 +100,7 @@ namespace MovieApp.Repositories
                                 AND
                                 Password = @CurrentPassword";
 
-                using (IDbConnection dbConnection = new SqlConnection(_configuration.GetConnectionString("default")))
+                using (IDbConnection dbConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     dbConnection.Open();
                     var result = dbConnection.Execute(query, model);
@@ -124,7 +124,7 @@ namespace MovieApp.Repositories
                                 Where
                                 Email = @Email";
 
-                using (IDbConnection dbConnection = new SqlConnection(_configuration.GetConnectionString("default")))
+                using (IDbConnection dbConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     dbConnection.Open();
                     var result = dbConnection.Execute(query, model);

@@ -4,6 +4,7 @@ using MovieApp.Domain;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,20 +16,60 @@ namespace MovieApp.Repositories
 
         public async Task<int> CreateAsync(Movies entity)
         {
+            //try
+            //{
+            //    var query = "SET IDENTITY_INSERT Products ON " +
+            //                "INSERT INTO Products (Title, YearReleased, Genre, Persons ) VALUES (@Title, @YearReleased, @Genre, @Persons)" +
+            //                "SET IDENTITY_INSERT Products OFF";
+
+            //    using (var connection = CreateConnection())
+            //    {
+            //        return (await connection.ExecuteAsync(query, entity));
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception(ex.Message, ex);
+            //}
+
+            IDbTransaction transaction = null;
+
             try
             {
-                var query = "SET IDENTITY_INSERT Products ON " +
-                            "INSERT INTO Products (Title, YearReleased, Genre, Persons ) VALUES (@Title, @YearReleased, @Genre, @Persons)" +
-                            "SET IDENTITY_INSERT Products OFF";
-
-                using (var connection = CreateConnection())
+                using (IDbConnection connection = new SqlConnection(DbConnectionString))
                 {
-                    return (await connection.ExecuteAsync(query, entity));
+
+                    if (connection.State != ConnectionState.Open)
+                        connection.Open();
+
+                    transaction = connection.BeginTransaction();
+
+                    string sql = "INSERT INTO Master(OrdinalNumber, StringDate)" +
+                                 "VALUES(@OrdinalNumber, @StringDate)";
+
+                    connection.Execute(sql, master, transaction);
+
+                    string sql = "INSERT INTO Child(OrdinalNumber, StringDate, Name, Amount, StartDate, EndDate)" +
+                                 "VALUES(@OrdinalNumber, @StringDate, @Name, @Amount, @StartDate, @EndDate)";
+
+                    connection.Execute(sql, child, transaction);
+
+                    transaction.Commit();
+
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex);
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                }
+                throw ex;
+            }
+            finally
+            {
+                if (transaction != null)
+                    transaction.Dispose();
             }
         }
 
