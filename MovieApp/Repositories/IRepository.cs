@@ -12,7 +12,7 @@ namespace MovieApp.Repositories
         Task<List<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
         Task<int> CreateAsync(MovieVM entity);
-        Task<int> UpdateAsync(T entity);
-        Task<int> DeleteAsync(T entity);
+        Task<int> UpdateAsync(MovieVM entity);
+        Task<int> DeleteAsync(MovieVM entity);
     }
 }

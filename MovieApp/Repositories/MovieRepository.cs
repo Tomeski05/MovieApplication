@@ -33,7 +33,7 @@ namespace MovieApp.Repositories
             }
         }
 
-        public async Task<int> DeleteAsync(Movies entity)
+        public async Task<int> DeleteAsync(MovieVM entity)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace MovieApp.Repositories
             }
         }
 
-        public async Task<int> UpdateAsync(Movies entity)
+        public async Task<int> UpdateAsync(MovieVM entity)
         {
             try
             {

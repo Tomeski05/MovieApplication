@@ -1,4 +1,5 @@
 ﻿using MovieApp.Domain;
+using MovieApp.Models;
 using MovieApp.Repositories;
 using System;
 using System.Collections.Generic;
@@ -16,29 +17,29 @@ namespace MovieApp.Services
             _movieRepository = movieRepository;
         }
 
-        public async Task<int> CreateProductAsync(Movies product)
+        public async Task<int> CreateAsync(MovieVM movie)
         {
-            return await _movieRepository.CreateAsync(product);
+            return await _movieRepository.CreateAsync(movie);
         }
 
-        public async Task<int> DeleteProductAsync(Movies product)
+        public async Task<int> DeleteAsync(MovieVM movie)
         {
-            return await _movieRepository.DeleteAsync(product);
+            return await _movieRepository.DeleteAsync(movie);
         }
 
-        public async Task<List<Movies>> GetAllProducts()
+        public async Task<List<Movies>> GetAll()
         {
             return await _movieRepository.GetAllAsync();
         }
 
-        public async Task<Movies> GetProductById(int id)
+        public async Task<Movies> GetById(int id)
         {
             return await _movieRepository.GetByIdAsync(id);
         }
 
-        public async Task<int> UpdateProductAsync(Movies product)
+        public async Task<int> UpdateAsync(MovieVM movie)
         {
-            return await _movieRepository.UpdateAsync(product);
+            return await _movieRepository.UpdateAsync(movie);
         }
     }
 }

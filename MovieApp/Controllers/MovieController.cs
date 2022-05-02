@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieApp.Domain;
+using MovieApp.Models;
 using MovieApp.Services;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,12 @@ namespace MovieApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _movieService.GetAllProducts());
+            return View(await _movieService.GetAll());
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            return View(await _movieService.GetProductById(id));
+            return View(await _movieService.GetById(id));
         }
 
         public IActionResult Create()
@@ -34,13 +35,13 @@ namespace MovieApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Movies product)
+        public async Task<IActionResult> Create(MovieVM product)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    await _movieService.CreateProductAsync(product);
+                    await _movieService.CreateAsync(product);
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -55,21 +56,21 @@ namespace MovieApp.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            return View(await _movieService.GetProductById(id));
+            return View(await _movieService.GetById(id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Movies movie)
+        public async Task<IActionResult> Edit(int id, MovieVM movie)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var dbMovies = await _movieService.GetProductById(id);
+                    var dbMovies = await _movieService.GetById(id);
                     if (await TryUpdateModelAsync<Movies>(dbMovies))
                     {
-                        await _movieService.UpdateProductAsync(dbMovies);
+                        await _movieService.UpdateAsync(dbMovies);
                         return RedirectToAction(nameof(Index));
                     }
                 }
@@ -88,10 +89,10 @@ namespace MovieApp.Controllers
         {
             try
             {
-                var dbMovies = await _movieService.GetProductById(id);
+                var dbMovies = await _movieService.GetById(id);
                 if (dbMovies != null)
                 {
-                    await _movieService.DeleteProductAsync(dbMovies);
+                    await _movieService.DeleteAsync(dbMovies);
                 }
             }
             catch (Exception ex)
