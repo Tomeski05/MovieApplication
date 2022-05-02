@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using MovieApp.Domain;
+using MovieApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,55 +15,28 @@ namespace MovieApp.Repositories
     {
         public MovieRepository(IConfiguration configuration): base(configuration) { }
 
-        public async Task<int> CreateAsync(Movies entity)
+        public async Task<int> CreateAsync(MovieVM entity)
         {
-            IDbTransaction transaction = null;
+            string query = @"INSERT INTO dbo.Movies (Name, DirectorId, ReleaseYear)
+                             VALUES(@Name, @DirectorId, @ReleaseYear)";
 
-            try
+            using (var conn = new SqlConnection(_connectionString.Value))
             {
-                using (var connection = CreateConnection())
-                {
-
-                    if (connection.State != ConnectionState.Open)
-                        connection.Open();
-
-                    transaction = connection.BeginTransaction();
-
-                    string query = "INSERT INTO Movies(Title, YearReleased ) VALUES (@Title, @YearReleased)";
-
-                    return connection.Execute(query, entity, transaction);
-
-                    string queryTwo = "INSERT INTO Persons(Title, YearReleased, Name)" +
-                                 "VALUES(@Title, @YearReleased, @Name)";
-
-                    return connection.Execute(queryTwo, entity, transaction);
-
-                    transaction.Commit();
-
-                }
+                var result = await conn.ExecuteAsync(
+                    query,
+                    new { Name = Movies.Title , DirectorId = movie.DirectorId, ReleaseYear = movie.ReleaseYear });
+                return result;
             }
-            catch (Exception ex)
-            {
-                if (transaction != null)
-                {
-                    transaction.Rollback();
-                }
-                throw ex;
-            }
-            finally
-            {
-                if (transaction != null)
-                    transaction.Dispose();
-            }
+
         }
 
         public async Task<int> DeleteAsync(Movies entity)
         {
             try
             {
-                var query = "DELETE " +
-                            "FROM Movies " +
-                            "WHERE MovieId = @MovieId";
+                var query = @"DELETE
+                            FROM Movies
+                            WHERE MovieId = @MovieId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("MovieId", entity.MovieId, DbType.Int64);
@@ -82,8 +56,8 @@ namespace MovieApp.Repositories
         {
             try
             {
-                var query = "SELECT * " +
-                            "FROM Movies"; 
+                var query = @"SELECT *
+                            FROM Movies"; 
 
                 using (var connection = CreateConnection())
                 {
@@ -100,9 +74,9 @@ namespace MovieApp.Repositories
         {
             try
             {
-                var query = "SELECT * " +
-                            "FROM Movies " +
-                            "WHERE MovieId = @MovieId";
+                var query = @"SELECT *
+                            FROM Movies
+                            WHERE MovieId = @MovieId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("MovieId", id, DbType.Int64);
@@ -122,9 +96,13 @@ namespace MovieApp.Repositories
         {
             try
             {
-                var query = "UPDATE Movies " +
-                            "SET Title = @Title, YearReleased = @YearReleased, Genre = @Genre, Persons = @Persons " +
-                            "WHERE Id = @Id";
+                var query = @"UPDATE Movies 
+                            SET
+                            Title = @Title,
+                            YearReleased = @YearReleased,
+                            Genre = @Genre,
+                            Persons = @Persons
+                            WHERE MovieId = @MovieId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("Title", entity.Title, DbType.String);
