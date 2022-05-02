@@ -16,27 +16,11 @@ namespace MovieApp.Repositories
 
         public async Task<int> CreateAsync(Movies entity)
         {
-            //try
-            //{
-            //    var query = "SET IDENTITY_INSERT Products ON " +
-            //                "INSERT INTO Products (Title, YearReleased, Genre, Persons ) VALUES (@Title, @YearReleased, @Genre, @Persons)" +
-            //                "SET IDENTITY_INSERT Products OFF";
-
-            //    using (var connection = CreateConnection())
-            //    {
-            //        return (await connection.ExecuteAsync(query, entity));
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new Exception(ex.Message, ex);
-            //}
-
             IDbTransaction transaction = null;
 
             try
             {
-                using (IDbConnection connection = new SqlConnection(DbConnectionString))
+                using (var connection = CreateConnection())
                 {
 
                     if (connection.State != ConnectionState.Open)
@@ -44,15 +28,14 @@ namespace MovieApp.Repositories
 
                     transaction = connection.BeginTransaction();
 
-                    string sql = "INSERT INTO Master(OrdinalNumber, StringDate)" +
-                                 "VALUES(@OrdinalNumber, @StringDate)";
+                    string query = "INSERT INTO Movies(Title, YearReleased ) VALUES (@Title, @YearReleased)";
 
-                    connection.Execute(sql, master, transaction);
+                    return connection.Execute(query, entity, transaction);
 
-                    string sql = "INSERT INTO Child(OrdinalNumber, StringDate, Name, Amount, StartDate, EndDate)" +
-                                 "VALUES(@OrdinalNumber, @StringDate, @Name, @Amount, @StartDate, @EndDate)";
+                    string queryTwo = "INSERT INTO Persons(Title, YearReleased, Name)" +
+                                 "VALUES(@Title, @YearReleased, @Name)";
 
-                    connection.Execute(sql, child, transaction);
+                    return connection.Execute(queryTwo, entity, transaction);
 
                     transaction.Commit();
 
