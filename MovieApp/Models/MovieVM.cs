@@ -8,9 +8,9 @@ namespace MovieApp.Models
 {
     public class MovieVM
     {
-        public Movies Movie { get; set; }
-        public Persons Person { get; set; }
-        public Genres Genre { get; set; }
-        public Roles Role { get; set; }
+        public string Title { get; set; }
+        public DateTime YearReleased { get; set; }
+        public int PersonsId { get; set; }
+        public int GenreId { get; set; }
     }
 }

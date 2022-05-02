@@ -1,4 +1,5 @@
 ﻿using MovieApp.Domain;
+using MovieApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace MovieApp.Repositories
     {
         Task<List<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
-        Task<int> CreateAsync(T entity);
+        Task<int> CreateAsync(MovieVM entity);
         Task<int> UpdateAsync(T entity);
         Task<int> DeleteAsync(T entity);
     }

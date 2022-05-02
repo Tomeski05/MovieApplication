@@ -17,17 +17,20 @@ namespace MovieApp.Repositories
 
         public async Task<int> CreateAsync(MovieVM entity)
         {
-            string query = @"INSERT INTO dbo.Movies (Name, DirectorId, ReleaseYear)
-                             VALUES(@Name, @DirectorId, @ReleaseYear)";
-
-            using (var conn = new SqlConnection(_connectionString.Value))
+            try
             {
-                var result = await conn.ExecuteAsync(
-                    query,
-                    new { Name = Movies.Title , DirectorId = movie.DirectorId, ReleaseYear = movie.ReleaseYear });
-                return result;
-            }
+                string query = @"INSERT INTO Movies (Title, YearReleased, PersonsId, GenreId)
+                             VALUES(@Title, @YearReleased, @PersonsId, @GenreId)";
 
+                using (var connection = CreateConnection())
+                {
+                    return (await connection.ExecuteAsync(query, entity));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
         }
 
         public async Task<int> DeleteAsync(Movies entity)
