@@ -34,7 +34,7 @@ namespace MovieApp
                         option.AccessDeniedPath = new PathString("/Account/AccessDenied");
                     });
 
-            services.AddScoped<IRepository, Repository.AccountRepository>();
+            services.AddScoped<IAccountRepository, Repositories.AccountRepository>();
 
             services.AddControllersWithViews();
 
