@@ -24,7 +24,8 @@ namespace MovieApp.Repositories
 
                 using (var connection = CreateConnection())
                 {
-                    return (await connection.ExecuteAsync(query, entity));
+                    return (await connection.ExecuteAsync(query, 
+                        new { Title = entity.Title, YearReleases = entity.YearReleased, PersonsId = entity.PersonsId, GenreId = entity.GenreId }));
                 }
             }
             catch (Exception ex)
@@ -59,8 +60,12 @@ namespace MovieApp.Repositories
         {
             try
             {
-                var query = @"SELECT *
-                            FROM Movies"; 
+                var query = @"SELECT m.Title, m.YearReleased, p.Name AS Name, g.mGenre AS MainGenre, g.sGenre AS SubGenre
+                            FROM Movies m
+                            INNER JOIN Persons p
+                            ON m.PersonId = p.PersonId
+                            INNER JOIN Genres g
+                            ON m.GenreId = g.GenreId"; 
 
                 using (var connection = CreateConnection())
                 {
@@ -102,16 +107,12 @@ namespace MovieApp.Repositories
                 var query = @"UPDATE Movies 
                             SET
                             Title = @Title,
-                            YearReleased = @YearReleased,
-                            Genre = @Genre,
-                            Persons = @Persons
+                            YearReleased = @YearReleased
                             WHERE MovieId = @MovieId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("Title", entity.Title, DbType.String);
                 parameters.Add("YearReleased", entity.YearReleased, DbType.Decimal);
-                parameters.Add("Genre", entity.Genre);
-                parameters.Add("Persons", entity.Persons, DbType.String);
                 parameters.Add("MovieId", entity.MovieId, DbType.Int64);
 
                 using (var connection = CreateConnection())
