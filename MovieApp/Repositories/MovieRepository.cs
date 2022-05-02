@@ -18,13 +18,8 @@ namespace MovieApp.Repositories
             try
             {
                 var query = "SET IDENTITY_INSERT Products ON " +
-                            "INSERT INTO Products (Name, Price, Quantity) VALUES (@Name, @Price, @Quantity)" +
+                            "INSERT INTO Products (Title, YearReleased, Genre, Persons ) VALUES (@Title, @YearReleased, @Genre, @Persons)" +
                             "SET IDENTITY_INSERT Products OFF";
-
-                //var parameters = new DynamicParameters();
-                //parameters.Add("Name", entity.Name, DbType.String);
-                //parameters.Add("Price", entity.Price, DbType.Decimal);
-                //parameters.Add("Quantity", entity.Quantity, DbType.Int32);
 
                 using (var connection = CreateConnection())
                 {
