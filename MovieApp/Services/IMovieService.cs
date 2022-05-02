@@ -12,7 +12,7 @@ namespace MovieApp.Services
         public Task<List<Movies>> GetAll();
         public Task<Movies> GetById(int id);
         public Task<int> CreateAsync(MovieVM movie);
-        public Task<int> UpdateAsync(MovieVM movie);
-        public Task<int> DeleteAsync(MovieVM movie);
+        public Task<int> UpdateAsync(Movies movie);
+        public Task<int> DeleteAsync(Movies movie);
     }
 }

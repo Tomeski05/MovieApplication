@@ -22,7 +22,7 @@ namespace MovieApp.Services
             return await _movieRepository.CreateAsync(movie);
         }
 
-        public async Task<int> DeleteAsync(MovieVM movie)
+        public async Task<int> DeleteAsync(Movies movie)
         {
             return await _movieRepository.DeleteAsync(movie);
         }
@@ -37,7 +37,7 @@ namespace MovieApp.Services
             return await _movieRepository.GetByIdAsync(id);
         }
 
-        public async Task<int> UpdateAsync(MovieVM movie)
+        public async Task<int> UpdateAsync(Movies movie)
         {
             return await _movieRepository.UpdateAsync(movie);
         }

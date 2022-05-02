@@ -61,7 +61,7 @@ namespace MovieApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, MovieVM movie)
+        public async Task<IActionResult> Edit(int id, Movies movie)
         {
             try
             {
