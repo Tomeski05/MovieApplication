@@ -1,4 +1,4 @@
-﻿using CalendarManagementApplication.Models;
+﻿using MovieApp.Domain;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using System;

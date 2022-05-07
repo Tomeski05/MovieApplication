@@ -1,5 +1,4 @@
-﻿using CalendarManagementApplication.Models;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +7,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Net.Mail;
 using System.Net;
-using Dapper;
-using System.Drawing;
 using MovieApp.Repositories;
 using MovieApp.Models;
+using MovieApp.Domain;
 
 namespace IdentityDemo.Controllers
 {
